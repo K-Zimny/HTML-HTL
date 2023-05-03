@@ -98,7 +98,7 @@
             }
           )
           .replace(
-            /<(p|h[1-6]|li|ul|button)[^>]*>([^<>]+)<\/\1>/g,
+            /<(p|h[1-6]|li|ul|button|a)[^>]*>([^<>]+)(?=<img)?<\/\1>?/g,
             (match, tag, text) => {
               const tagName = tag.toLowerCase();
               const counter =
@@ -109,7 +109,9 @@
                 ).length + 1;
               const propertyName =
                 tagName + "Text" + (counter > 1 ? counter : "");
-              return `<${tag}>\${properties.${propertyName}}<\/${tag}>`;
+              return `<${tag}>\${properties.${propertyName}}${
+                match.includes("<img") ? "<" : "<\/" + tag + ">"
+              }`;
             }
           );
 
